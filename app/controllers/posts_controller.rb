@@ -62,7 +62,12 @@ class PostsController < ApplicationController
     post_pdf = Prawn::Document.new
     post_pdf.text @post.title
     post_pdf.text @post.description
-    send_data(post_pdf.render, filename: "#{@post.title}.pdf", type:"application/pdf")
+    if params[:preview].present?
+      send_data(post_pdf.render, filename: "#{@post.title}.pdf", type:"application/pdf", disposition:'inline')
+      else
+        send_data(post_pdf.render, filename: "#{@post.title}.pdf", type:"application/pdf")
+    end
+    
   end
 
   private
